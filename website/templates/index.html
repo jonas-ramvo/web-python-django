@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container">
+    {% load static %}
+    <img src="{% static 'banner.png' %}" alt="My image" width="100%">
+  </div>
+  <div class="alert alert-warning" role="alert">
+    <h1>Ultimos añadidos</h1>
+  </div> 
+  <div class="container p-5">
+    <div class="row">
+      {% if videojuegos %}
+      {% for videojuego in videojuegos %}
+      <div class="col-md-3">
+        <div class="card mb-4 box-shadow"><a href="videojuego/{{videojuego.fabricante.fabricante}}/{{videojuego.id}}/{{videojuego.titulo}}">
+          <img class="card-img-top" src="{% static '' %}{{videojuego.portada}}" alt="Card image cap">
+          <div class="card-body">
+            <h5>{{videojuego.titulo}}</h5>
+            <p>{{videojuego.fabricante.fabricante}}</p></a>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group pt-3">
+                {% if user.is_authenticated %}
+                <form id="favorito" action="{% url 'user_favorito' %}" method="POST">{% csrf_token %}
+                  <input type="hidden" name="favorito_id" id="favorito_id" value="{{ videojuego.id }}">
+                  <button type="submit" class="btn btn-sm btn-outline-success">Lo tengo</button>
+                </form>
+                {% endif %}
+              </div>
+              <div class="btn-group pt-3">
+                <h4>{{videojuego.puntuacion}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+{% block footer %}Home{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if user.is_authenticated %}
+    {% for message in messages %}
+    <div class="alert alert-success m-5" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    <div class="alert alert-warning mb-5" role="alert">
+      <h1>Tus favoritos</h1>
+    </div> 
+      <table class="table table-striped mb-5">
+        <thead>
+          <tr>
+            <th scope="col">Portada</th>
+            <th scope="col">Nombre de juego</th>
+            <th scope="col">Fabricante</th>
+            <th scope="col">Puntuacion</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for favorito in favoritos %}{% load static %}
+          <form id="favorito" class="p-3" action="{% url 'user_favorito_delete' %}" method="POST">{% csrf_token %}
+            <input type="hidden" name="favorito_id" id="favorito_id" value="{{ favorito.videojuegos.id }}">
+            <tr>
+              <td> <img src="{% static '' %}{{favorito.videojuegos.portada}}" alt="Card image cap" width="20%"
+                  height="auto"></td>
+              <td>{{ favorito.videojuegos.titulo }}</td>
+              <td>{{ favorito.videojuegos.fabricante.fabricante }}</td>
+              <td>{{ favorito.videojuegos.puntuacion }}</td>
+              <td><button type="submit" class="btn btn-sm btn-outline-danger">borrar</button></td>
+            </tr>
+          </form>
+          {% endfor %}
+        </tbody>
+      </table>
+  {% else %}
+    <div class="alert alert-warning mb-5" role="alert">
+      <h1>Login</h1>
+    </div> 
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    <div class="text-sm-start p-5">
+      <form action="{% url 'user_login' %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Nombre de usuario</label>
+          <input type="text" class="form-control" id="username" name="username"  required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Acceder</button>
+        <div class="text-center pt-5">
+          <p>No tienes cuenta? <a href="{% url 'user_register' %}">Registrarme</a></p>
+        </div>
+      </form>
+    </div>
+  {% endif %}
+{% endblock %}
+{% block footer %}Accounts{% endblock %}

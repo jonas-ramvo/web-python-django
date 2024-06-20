@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="alert alert-warning mb-5" role="alert">
+        <h1>Ficha tecnica</h1>
+    </div> 
+    {% load static %}
+    <h1>{{videojuego.titulo}}</h1>
+    <h5>{{videojuego.fabricante.fabricante}}</h5>
+    <img src="{% static '' %}{{videojuego.portada}}" class="img-fluid p-5" alt="portada" />
+    <div class="container">
+        <p class="text-sm-center"><b>Descripcion:</b><br>{{videojuego.descripcion}}</p>
+    </div>
+    <div class="p-5">
+        <h1 class="text-warning">{{videojuego.puntuacion}}</h1>
+        <h5>votacion popular</h5>
+    </div>
+{% endblock %}
+{% block footer %}Videojuegos{% endblock %}
